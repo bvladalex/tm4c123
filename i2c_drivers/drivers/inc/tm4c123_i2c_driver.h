@@ -100,15 +100,15 @@ typedef struct{
 #define I2C_CLKTO_FLAG		(1U<<7)
 
 ///////////////Write commands/////////////
-#define I2C_MODE_HS  			(1U<<7)
+#define I2C_TX						(1U<<0)
 #define I2C_STA_TX				((1U<<0)|(1U<<1))
-#define I2C_STA_STP				((1U<<0)|(1U<<1)|(1U<<2))
+#define I2C_STA_TX_STP		((1U<<0)|(1U<<1)|(1U<<2))
 ///////////////Read commands//////////////
 #define I2C_STA_RX_N_ACK	((1U<<0)|(1U<<1))
 #define I2C_STA_RX_STP		((1U<<0)|(1U<<1)|(1U<<2))
 #define I2C_STA_RX				((1U<<0)|(1U<<1)|(1U<<3))
 
-
+#define I2C_MODE_HS  			(1U<<7)
 
 ///////////////////API declaration section//////////
 
@@ -130,9 +130,9 @@ void I2C_slave_enable(I2C0_Type *pI2Cx);
 
 //////Send and receive data////
 
-void I2C_SendData(I2C0_Type *pI2Cx, uint8_t *pTxBuffer, uint32_t Len);
+void I2C_SendData(I2C_Handle_t *pI2CHandle, uint8_t *pTxBuffer, uint32_t Len, uint8_t slave_addr);
 		 
-void I2C_ReceiveData(I2C0_Type *pI2Cx, uint8_t *pRxBuffer, uint32_t Len);
+void I2C_ReceiveData(I2C_Handle_t *pI2CHandle, uint8_t *pRxBuffer, uint32_t Len);
 
 ////Core interrupt configuration/////
 

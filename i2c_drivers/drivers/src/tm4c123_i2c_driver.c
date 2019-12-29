@@ -13,6 +13,12 @@
 //TPR is between 1 and 127
 */
 
+static void I2Cslave_addr_wr(I2C_Handle_t *pI2CHandle, uint8_t slave_addr){
+	uint8_t slave_address=(slave_addr<<1);
+	pI2CHandle->pI2Cx->MSA=slave_address;
+	pI2CHandle->pI2Cx->MSA&=~(1U);
+}
+
 void I2C_PeriClockControl(I2C0_Type *pI2Cx, uint8_t EnorDi){
 	if(EnorDi){
 	if (pI2Cx==I2C0)
@@ -50,6 +56,23 @@ void I2C_slave_enable(I2C0_Type *pI2Cx){
 	pI2Cx->MCR|=(I2C_MODE_SLAVE);
 }
 
+////////////////////Master send data function///////////////////////////
+
+void I2C_SendData(I2C_Handle_t *pI2CHandle, uint8_t *pTxBuffer, uint32_t Len, uint8_t slave_addr){
+	I2Cslave_addr_wr(pI2CHandle, slave_addr);
+	pI2CHandle->pI2Cx->MDR=*pTxBuffer;
+	Len--;
+	pI2CHandle->pI2Cx->MCS=I2C_STA_TX;
+	while(Len){
+		while(I2C_GetFlagStatus(pI2CHandle->pI2Cx,I2C_BSY_FLAG)==FLAG_SET);
+		while(I2C_GetFlagStatus(pI2CHandle->pI2Cx,I2C_ERROR_FLAG)==FLAG_SET);
+		pI2CHandle->pI2Cx->MDR=*pTxBuffer;
+		pTxBuffer++;
+		Len--;
+		pI2CHandle->pI2Cx->MCS=I2C_TX;
+	}
+	///////to be continued according to diagram on page 1010////
+}
 
 uint8_t I2C_GetFlagStatus(I2C0_Type *pI2Cx, uint8_t FlagName){
 	if(pI2Cx->MCS & FlagName)
