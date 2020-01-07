@@ -7,16 +7,31 @@ typedef struct{
 	uint8_t i2c_mode;
 	uint8_t i2c_clock_set;
   uint8_t i2c_slave_address;
+	uint8_t i2c_master_slave;
 }I2C_Config_t;
 
 
 typedef struct{
 	I2C0_Type *pI2Cx;
 	I2C_Config_t I2CConfig;
+	uint8_t *pRxBuffer;
+	uint8_t *pTxBuffer;
+	uint32_t TxLen;
+	uint32_t RxLen;
+	uint8_t TxRxState;
+	uint8_t DevAddress;
+	uint32_t RxSize;
+	uint8_t Sr;
 }I2C_Handle_t;
 
-#define I2C_HS_MODE				1U<<4
-#define I2C_NON_HS_MODE		1U<<4
+/////I2C possible states////
+
+#define I2C_IDLE 					0
+#define I2C_BUSY_IN_TX		1
+#define I2C_BUSY_IN_RX		2
+
+#define I2C_HS_MODE				1U
+#define I2C_NON_HS_MODE		0
 
 #define I2C_MODE_MASTER 	1U<<4
 #define I2C_MODE_SLAVE		1U<<5
@@ -88,6 +103,58 @@ typedef struct{
 |         | Combinations not listed are NOP      | NOP                                                  |
 +---------+--------------------------------------+------------------------------------------------------+
 
+
++---------+-----------+--------------------------+------------------------------------------------------+
+| Current | I2CMSA[0] | I2CMCS[3:0]              | Description                                          |
+| state   +-----------+-----+------+-------+-----+                                                      |
+|         | R/S       | ACK | STOP | START | RUN |                                                      |
++---------+-----------+-----+------+-------+-----+------------------------------------------------------+
+| TX      | x         | x   | 0    | 0     | 1   | Transmit ->          
+|         +-----------+-----+------+-------+-----+------------------------------------------------------+
+|         | x         | x   | 1    | 0     | 0   | STOP ->                                            
+|         +-----------+-----+------+-------+-----+------------------------------------------------------+
+|         | x         | x   | 1    | 0     | 1   | Transmit -> STOP 
+|         +-----------+-----+------+-------+-----+------------------------------------------------------+
+|         | 0         | x   | 0    | 1     | 1   | Repeated START -> Transmit   
+|         +-----------+-----+------+-------+-----+------------------------------------------------------+
+|         | 0         | x   | 1    | 1     | 1   | Repeated START -> Transmit -> STOP                
+|         +-----------+-----+------+-------+-----+------------------------------------------------------+
+|         | 1         | 0   | 0    | 1     | 1   | Repeated START -> Receive -> NACK                                    
+|         +-----------+-----+------+-------+-----+------------------------------------------------------+
+|         | 1         | 0   | 1    | 1     | 1   | Repeated START -> Transmit -> STOP                                   
+|         +-----------+-----+------+-------+-----+------------------------------------------------------+
+|         | 1         | 1   | 0    | 1     | 1   | Repeated START -> Receive                                            
+|         +-----------+-----+------+-------+-----+------------------------------------------------------+
+|         | 1         | 1   | 1    | 1     | 1   | Illegal                                              
++---------+--------------------------------------+------------------------------------------------------+
+
++---------+-----------+--------------------------+------------------------------------------------------+
+| Current | I2CMSA[0] | I2CMCS[3:0]              | Description                                          |
+| state   +-----------+-----+------+-------+-----+                                                      |
+|         | R/S       | ACK | STOP | START | RUN |                                                      |
++---------+-----------+-----+------+-------+-----+------------------------------------------------------+
+| RX      | x         | 0   | 0    | 0     | 1   | Receive -> NACK           
+|         +-----------+-----+------+-------+-----+------------------------------------------------------+
+|         | x         | x   | 1    | 0     | 0   | STOP ->                                            
+|         +-----------+-----+------+-------+-----+------------------------------------------------------+
+|         | x         | 0   | 1    | 0     | 1   | Receive -> STOP 
+|         +-----------+-----+------+-------+-----+------------------------------------------------------+
+|         | x         | 1   | 0    | 0     | 1   | Receive   
+|         +-----------+-----+------+-------+-----+------------------------------------------------------+
+|         | x         | 1   | 1    | 0     | 1   | Illegal                
+|         +-----------+-----+------+-------+-----+------------------------------------------------------+
+|         | 1         | 0   | 0    | 1     | 1   | Repeated START -> Receive -> NACK                                    
+|         +-----------+-----+------+-------+-----+------------------------------------------------------+
+|         | 1         | 0   | 1    | 1     | 1   | Repeated START -> Transmit -> STOP                                   
+|         +-----------+-----+------+-------+-----+------------------------------------------------------+
+|         | 1         | 1   | 0    | 1     | 1   | Repeated START -> Receive                                            
+|         +-----------+-----+------+-------+-----+------------------------------------------------------+
+|         | 0         | x   | 0    | 1     | 1   | Repeated START -> Transmit      
+|         +-----------+-----+------+-------+-----+------------------------------------------------------+
+|         | 0         | x   | 1    | 1     | 1   | Repeated START -> Transmit -> STOP  
++---------+--------------------------------------+------------------------------------------------------+
+
+
 */
 ///////////////Flag macros////////////////
 #define I2C_BSY_FLAG     	(1U<<0)
@@ -100,6 +167,7 @@ typedef struct{
 #define I2C_CLKTO_FLAG		(1U<<7)
 
 ///////////////Write commands/////////////
+#define I2C_MB_FINISH     ((1U<<0)|(1U<<2))
 #define I2C_TX						(1U<<0)
 #define I2C_STA_TX				((1U<<0)|(1U<<1))
 #define I2C_STA_TX_STP		((1U<<0)|(1U<<1)|(1U<<2))
@@ -107,8 +175,12 @@ typedef struct{
 #define I2C_STA_RX_N_ACK	((1U<<0)|(1U<<1))
 #define I2C_STA_RX_STP		((1U<<0)|(1U<<1)|(1U<<2))
 #define I2C_STA_RX				((1U<<0)|(1U<<1)|(1U<<3))
+#define I2C_RX						((1U<<0)|(1U<<3))
 
 #define I2C_MODE_HS  			(1U<<7)
+
+#define I2C_EN_SR					ENABLE
+#define I2C_DIS_SR 				DISABLE
 
 ///////////////////API declaration section//////////
 
@@ -130,14 +202,23 @@ void I2C_slave_enable(I2C0_Type *pI2Cx);
 
 //////Send and receive data////
 
-void I2C_SendData(I2C_Handle_t *pI2CHandle, uint8_t *pTxBuffer, uint32_t Len, uint8_t slave_addr);
+void I2C_SendData(I2C_Handle_t *pI2CHandle, uint8_t *pTxBuffer, uint32_t Len, uint8_t slave_addr, uint8_t i2c_enordis_sr);
 		 
-void I2C_ReceiveData(I2C_Handle_t *pI2CHandle, uint8_t *pRxBuffer, uint32_t Len);
+void I2C_ReceiveData(I2C_Handle_t *pI2CHandle, uint8_t *pRxBuffer, uint32_t Len, uint8_t slave_addr);
+
+//////Send and receive data with interrupts////
+
+uint8_t I2C_SendDataIT(I2C_Handle_t *pI2CHandle, uint8_t *pTxBuffer, uint32_t Len, uint8_t slave_addr, uint8_t i2c_enordis_sr);
+		 
+uint8_t I2C_ReceiveDataIT(I2C_Handle_t *pI2CHandle, uint8_t *pRxBuffer, uint32_t Len, uint8_t slave_addr);
 
 ////Core interrupt configuration/////
 
 void I2C_IRQInterruptConfig(uint8_t IRQNumber, uint8_t EnorDis);
 void I2C_IRQPriorityConfig(uint8_t IRQNumber,uint8_t IRQPriority);
+
+void I2C_EV_IRQHandling(I2C_Handle_t *pI2CHandle);
+void I2C_ER_IRQHandling(I2C_Handle_t *pI2CHandle);
 
 #endif //INC_TM4C123_I2C_DRV_HEADER
 

@@ -20,8 +20,8 @@ I (C:\Users\Vlad\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\Core\Include\cmsi
 I (C:\Users\Vlad\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\Core\Include\cmsis_armcc.h)(0x5D25D706)
 I (C:\Users\Vlad\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\Core\Include\mpu_armv7.h)(0x5C8F9424)
 I (.\system_TM4C123GH6PM.h)(0x5E08DD1C)
-F (.\drivers\src\tm4c123_i2c_driver.c)(0x5E090FB2)(--c99 --gnu -c --cpu Cortex-M4.fp -D__EVAL -g -O0 --apcs=interwork --split_sections -I .\drivers\inc -I .\ -I .\drivers\src-I.\RTE\_Target_1-IC:\Users\Vlad\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\Core\Include-IC:\Users\Vlad\AppData\Local\Arm\Packs\Keil\TM4C_DFP\1.1.0\Device\Include\TM4C123-D__UVISION_VERSION="528" -D_RTE_ -DTM4C123GH6PM-o .\objects\tm4c123_i2c_driver.o --omf_browse .\objects\tm4c123_i2c_driver.crf --depend .\objects\tm4c123_i2c_driver.d)
-I (.\drivers\inc\tm4c123_i2c_driver.h)(0x5E090FB3)
+F (.\drivers\src\tm4c123_i2c_driver.c)(0x5E1247CA)(--c99 --gnu -c --cpu Cortex-M4.fp -D__EVAL -g -O0 --apcs=interwork --split_sections -I .\drivers\inc -I .\ -I .\drivers\src-I.\RTE\_Target_1-IC:\Users\Vlad\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\Core\Include-IC:\Users\Vlad\AppData\Local\Arm\Packs\Keil\TM4C_DFP\1.1.0\Device\Include\TM4C123-D__UVISION_VERSION="528" -D_RTE_ -DTM4C123GH6PM-o .\objects\tm4c123_i2c_driver.o --omf_browse .\objects\tm4c123_i2c_driver.crf --depend .\objects\tm4c123_i2c_driver.d)
+I (.\drivers\inc\tm4c123_i2c_driver.h)(0x5E122FA5)
 I (.\drivers\inc\TM4C123GH6PM_mcu1.h)(0x5E08DD1C)
 I (C:\Users\Vlad\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\Core\Include\core_cm4.h)(0x5D25D706)
 I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x5CEBC032)
@@ -31,7 +31,7 @@ I (C:\Users\Vlad\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\Core\Include\cmsi
 I (C:\Users\Vlad\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\Core\Include\mpu_armv7.h)(0x5C8F9424)
 I (.\system_TM4C123GH6PM.h)(0x5E08DD1C)
 I (C:\Keil_v5\ARM\ARMCC\include\stddef.h)(0x5CEBC032)
-F (.\main.c)(0x5E08DD1C)(--c99 --gnu -c --cpu Cortex-M4.fp -D__EVAL -g -O0 --apcs=interwork --split_sections -I .\drivers\inc -I .\ -I .\drivers\src-I.\RTE\_Target_1-IC:\Users\Vlad\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\Core\Include-IC:\Users\Vlad\AppData\Local\Arm\Packs\Keil\TM4C_DFP\1.1.0\Device\Include\TM4C123-D__UVISION_VERSION="528" -D_RTE_ -DTM4C123GH6PM-o .\objects\main.o --omf_browse .\objects\main.crf --depend .\objects\main.d)
+F (.\main.c)(0x5E11FDCD)(--c99 --gnu -c --cpu Cortex-M4.fp -D__EVAL -g -O0 --apcs=interwork --split_sections -I .\drivers\inc -I .\ -I .\drivers\src-I.\RTE\_Target_1-IC:\Users\Vlad\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\Core\Include-IC:\Users\Vlad\AppData\Local\Arm\Packs\Keil\TM4C_DFP\1.1.0\Device\Include\TM4C123-D__UVISION_VERSION="528" -D_RTE_ -DTM4C123GH6PM-o .\objects\main.o --omf_browse .\objects\main.crf --depend .\objects\main.d)
 I (.\drivers\inc\TM4C123GH6PM_mcu1.h)(0x5E08DD1C)
 I (C:\Users\Vlad\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\Core\Include\core_cm4.h)(0x5D25D706)
 I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x5CEBC032)
@@ -42,13 +42,12 @@ I (C:\Users\Vlad\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\Core\Include\mpu_
 I (.\system_TM4C123GH6PM.h)(0x5E08DD1C)
 I (.\drivers\inc\tm4c123_gpio_driver.h)(0x5E08DD1C)
 I (.\drivers\inc\tm4c123_spi_driver.h)(0x5E08DD1C)
-I (.\drivers\inc\tm4c123_i2c_driver.h)(0x5E090FB3)
+I (.\drivers\inc\tm4c123_i2c_driver.h)(0x5E122FA5)
 I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x5CEBC032)
-I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x5CEBC032)
 F (.\drivers\inc\TM4C123GH6PM_mcu1.h)(0x5E08DD1C)()
 F (.\drivers\inc\tm4c123_gpio_driver.h)(0x5E08DD1C)()
 F (.\drivers\inc\tm4c123_spi_driver.h)(0x5E08DD1C)()
-F (.\drivers\inc\tm4c123_i2c_driver.h)(0x5E090FB3)()
+F (.\drivers\inc\tm4c123_i2c_driver.h)(0x5E122FA5)()
 F (.\CMSIS\cmsis_armcc.h)(0x5E08DD1C)()
 F (.\CMSIS\cmsis_armclang.h)(0x5E08DD1C)()
 F (.\CMSIS\cmsis_armclang_ltm.h)(0x5E08DD1C)()
@@ -74,6 +73,14 @@ F (.\CMSIS\core_sc300.h)(0x5E08DD1C)()
 F (.\CMSIS\mpu_armv7.h)(0x5E08DD1C)()
 F (.\CMSIS\mpu_armv8.h)(0x5E08DD1C)()
 F (.\CMSIS\tz_context.h)(0x5E08DD1C)()
+F (C:\Users\Vlad\AppData\Local\Arm\Packs\Keil\ARM_Compiler\1.6.1\Source\retarget_io.c)(0x584E700E)(--c99 --gnu -c --cpu Cortex-M4.fp -D__EVAL -g -O0 --apcs=interwork --split_sections -I .\drivers\inc -I .\ -I .\drivers\src-I.\RTE\_Target_1-IC:\Users\Vlad\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\Core\Include-IC:\Users\Vlad\AppData\Local\Arm\Packs\Keil\TM4C_DFP\1.1.0\Device\Include\TM4C123-D__UVISION_VERSION="528" -D_RTE_ -DTM4C123GH6PM-o .\objects\retarget_io.o --omf_browse .\objects\retarget_io.crf --depend .\objects\retarget_io.d)
+I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x5CEBC032)
+I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x5CEBC032)
+I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x5CEBC032)
+I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x5CEBC032)
+I (C:\Keil_v5\ARM\ARMCC\include\assert.h)(0x5CEBC026)
+I (C:\Keil_v5\ARM\ARMCC\include\rt_sys.h)(0x5CEBC030)
+I (.\RTE\_Target_1\RTE_Components.h)(0x5E11F29C)
 F (RTE\Device\TM4C123GH6PM\startup_TM4C123.s)(0x5E08DD1C)(--cpu Cortex-M4.fp --pd "__EVAL SETA 1" -g --apcs=interwork -I.\RTE\_Target_1-IC:\Users\Vlad\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\Core\Include-IC:\Users\Vlad\AppData\Local\Arm\Packs\Keil\TM4C_DFP\1.1.0\Device\Include\TM4C123--pd "__UVISION_VERSION SETA 528" --pd "_RTE_ SETA 1" --pd "TM4C123GH6PM SETA 1"--list .\listings\startup_tm4c123.lst --xref -o .\objects\startup_tm4c123.o --depend .\objects\startup_tm4c123.d)
 F (RTE\Device\TM4C123GH6PM\system_TM4C123.c)(0x5E08DD1C)(--c99 --gnu -c --cpu Cortex-M4.fp -D__EVAL -g -O0 --apcs=interwork --split_sections -I .\drivers\inc -I .\ -I .\drivers\src-I.\RTE\_Target_1-IC:\Users\Vlad\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\Core\Include-IC:\Users\Vlad\AppData\Local\Arm\Packs\Keil\TM4C_DFP\1.1.0\Device\Include\TM4C123-D__UVISION_VERSION="528" -D_RTE_ -DTM4C123GH6PM-o .\objects\system_tm4c123.o --omf_browse .\objects\system_tm4c123.crf --depend .\objects\system_tm4c123.d)
 I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x5CEBC032)
