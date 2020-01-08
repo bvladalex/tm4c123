@@ -51,6 +51,11 @@ typedef struct{
 //#define I2C_MODULE_NO_1   1U<<1
 //#define I2C_MODULE_NO_2   1U<<2
 //#define I2C_MODULE_NO_3   1U<<3
+
+//////I2C slave macros////////////////
+#define I2C_SLV_RREQ		1U
+#define I2C_SLV_TREQ		1U<<1
+
 /////////MACROS for I2C configuration/////////
 
 
@@ -205,6 +210,13 @@ void I2C_slave_enable(I2C0_Type *pI2Cx);
 void I2C_SendData(I2C_Handle_t *pI2CHandle, uint8_t *pTxBuffer, uint32_t Len, uint8_t slave_addr, uint8_t i2c_enordis_sr);
 		 
 void I2C_ReceiveData(I2C_Handle_t *pI2CHandle, uint8_t *pRxBuffer, uint32_t Len, uint8_t slave_addr);
+
+//////Send and receive data as slave////
+
+void I2C_SlaveSendData(I2C_Handle_t *pI2CHandle, uint8_t *pTxBuffer, uint8_t slave_addr);
+		 
+void I2C_SlaveReceiveData(I2C_Handle_t *pI2CHandle, uint8_t *pRxBuffer, uint8_t slave_addr);
+
 
 //////Send and receive data with interrupts////
 

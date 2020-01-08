@@ -85,24 +85,33 @@ int main(void){
 	I2Cperiph_init();
 	GPIO_i2c_send_init();
 	
+	I2C_Conf_handle.pI2Cx->SOAR=slave_addr;
+	I2C_Conf_handle.pI2Cx->SOAR=1U;
+	
 	while(1){
-	
-		while (GPIO_ReadFromInputPin(GPIOF,GPIO_PIN_NO_4));
-	
-		delay_debounce();
 		
-		////Receive data length///////
-	
-		command_code=0x51;
-		I2C_SendData(&I2C_Conf_handle,&command_code,1,slv_addr, I2C_EN_SR);
-		I2C_ReceiveData(&I2C_Conf_handle,&len,1,slv_addr);
+		if((I2C_Conf_handle.pI2Cx->I2CSCSR)|I2C_SLV_RREQ)
+			void I2C_SlaveReceiveData(&I2C_Conf_handle, received_data, uint8_t slv_addr);
+		if((I2C_Conf_handle.pI2Cx->I2CSCSR)|I2C_SLV_TREQ)
+			void I2C_SlaveSendData(&I2C_Conf_handle, my_data, uint8_t slv_addr);
 		
-		//////Receive actual data/////
 		
-		command_code=0x52;
-		I2C_SendData(&I2C_Conf_handle,&command_code,1,slv_addr,I2C_EN_SR);
-		I2C_ReceiveData(&I2C_Conf_handle,received_data,len,slv_addr);
-		command_code=0x53;
+		//while (GPIO_ReadFromInputPin(GPIOF,GPIO_PIN_NO_4));
+	    //
+		//delay_debounce();
+		//
+		//////Receive data length///////
+	    //
+		//command_code=0x51;
+		//I2C_SendData(&I2C_Conf_handle,&command_code,1,slv_addr, I2C_EN_SR);
+		//I2C_ReceiveData(&I2C_Conf_handle,&len,1,slv_addr);
+		//
+		////////Receive actual data/////
+		//
+		//command_code=0x52;
+		//I2C_SendData(&I2C_Conf_handle,&command_code,1,slv_addr,I2C_EN_SR);
+		//I2C_ReceiveData(&I2C_Conf_handle,received_data,len,slv_addr);
+		//command_code=0x53;	
 	}
 	
 	return 0;
