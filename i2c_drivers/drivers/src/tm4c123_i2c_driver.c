@@ -143,16 +143,16 @@ void I2C_ReceiveData(I2C_Handle_t *pI2CHandle, uint8_t *pTxBuffer, uint32_t Len,
 
 ////////////////////Slave send data function///////////////////////////
 void I2C_SlaveSendData(I2C_Handle_t *pI2CHandle, uint8_t *pTxBuffer, uint8_t slave_addr){
-	while(pI2CHandle->pI2Cx->I2CSCSR|I2C_SLV_TREQ){
-		pI2CHandle->pI2Cx->I2CSDR=*pTxBuffer;
+	while((pI2CHandle->pI2Cx->SCSR)&I2C_SLV_TREQ){
+		pI2CHandle->pI2Cx->SDR=*pTxBuffer;
 		pTxBuffer++;
 	}
 }
 
 ////////////////////Slave receive data function///////////////////////////		 
 void I2C_SlaveReceiveData(I2C_Handle_t *pI2CHandle, uint8_t *pRxBuffer, uint8_t slave_addr){
-	while(pI2CHandle->pI2Cx->I2CSCSR|I2C_SLV_RREQ){
-		*pRxBuffer=pI2CHandle->pI2Cx->I2CSDR;
+	while((pI2CHandle->pI2Cx->SCSR)&I2C_SLV_RREQ){
+		*pRxBuffer=pI2CHandle->pI2Cx->SDR;
 		pRxBuffer++;
 	}
 }

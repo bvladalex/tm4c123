@@ -17,8 +17,10 @@ Alt fn number for all pins is 3
 
 I2C_Handle_t I2C_Conf_handle;
 uint8_t my_data[]="We are testing I2c comms!\n";
-uint8_t slv_addr=0X68;
+uint8_t slv_addr=0X69;
 uint8_t received_data[30];
+uint8_t data_for_tx[50];
+
 
 void delay_debounce(void){
 for(int i=0; i<1500000; i++);
@@ -81,19 +83,25 @@ int main(void){
 	uint8_t command_code;
 	uint8_t len;
 	
+	uint8_t data_length=strlen((char*)my_data);
+	
 	GPIOpins_I2Cinit();
 	I2Cperiph_init();
 	GPIO_i2c_send_init();
 	
-	I2C_Conf_handle.pI2Cx->SOAR=slave_addr;
+	I2C_Conf_handle.pI2Cx->SOAR=slv_addr;
 	I2C_Conf_handle.pI2Cx->SOAR=1U;
 	
 	while(1){
 		
-		if((I2C_Conf_handle.pI2Cx->I2CSCSR)|I2C_SLV_RREQ)
-			void I2C_SlaveReceiveData(&I2C_Conf_handle, received_data, uint8_t slv_addr);
-		if((I2C_Conf_handle.pI2Cx->I2CSCSR)|I2C_SLV_TREQ)
-			void I2C_SlaveSendData(&I2C_Conf_handle, my_data, uint8_t slv_addr);
+		if((I2C_Conf_handle.pI2Cx->SCSR)&I2C_SLV_RREQ)
+			I2C_SlaveReceiveData(&I2C_Conf_handle, received_data, slv_addr);
+		if (received_data[1]==0x51)
+			I2C_SlaveSendData(&I2C_Conf_handle, &data_length , slv_addr);
+		else if(received_data[1]==0x52)
+			I2C_SlaveSendData(&I2C_Conf_handle, my_data , slv_addr);
+		//if((I2C_Conf_handle.pI2Cx->SCSR)&I2C_SLV_TREQ)
+		//	I2C_SlaveSendData(&I2C_Conf_handle, my_data, slv_addr);
 		
 		
 		//while (GPIO_ReadFromInputPin(GPIOF,GPIO_PIN_NO_4));
