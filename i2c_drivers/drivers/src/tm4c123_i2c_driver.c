@@ -14,6 +14,7 @@
 
 static void I2Cslave_addr_wr(I2C_Handle_t *pI2CHandle, uint8_t slave_addr);
 static void I2Cslave_addr_rd(I2C_Handle_t *pI2CHandle, uint8_t slave_addr);
+static void delay_tx(void);
 
 
 static void I2Cslave_addr_wr(I2C_Handle_t *pI2CHandle, uint8_t slave_addr){
@@ -28,6 +29,9 @@ static void I2Cslave_addr_rd(I2C_Handle_t *pI2CHandle, uint8_t slave_addr){
 	pI2CHandle->pI2Cx->MSA|=(1U);
 }
 
+static void delay_tx(void){
+for(int i=0; i<800; i++);
+}
 
 void I2C_PeriClockControl(I2C0_Type *pI2Cx, uint8_t EnorDi){
 	if(EnorDi){
@@ -146,6 +150,7 @@ void I2C_SlaveSendData(I2C_Handle_t *pI2CHandle, uint8_t *pTxBuffer, uint8_t sla
 	while((pI2CHandle->pI2Cx->SCSR)&I2C_SLV_TREQ){
 		pI2CHandle->pI2Cx->SDR=*pTxBuffer;
 		pTxBuffer++;
+		delay_tx();
 	}
 }
 

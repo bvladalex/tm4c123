@@ -27,6 +27,7 @@ void delay_debounce(void){
 for(int i=0; i<1500000; i++);
 }
 
+
 void I2Cperiph_init(void){
 	
 	
@@ -34,7 +35,7 @@ void I2Cperiph_init(void){
 	I2C_Conf_handle.I2CConfig.i2c_clock_set=I2C_TPR_VAL_8;
 	I2C_Conf_handle.I2CConfig.i2c_mode=I2C_NON_HS_MODE;
 	I2C_Conf_handle.I2CConfig.i2c_slave_address=0x00;
-	I2C_Conf_handle.I2CConfig.i2c_master_slave=I2C_MODE_MASTER;
+	I2C_Conf_handle.I2CConfig.i2c_master_slave=I2C_MODE_SLAVE;
 	
 	I2C_Init(&I2C_Conf_handle);
 }
