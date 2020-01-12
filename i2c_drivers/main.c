@@ -102,26 +102,7 @@ int main(void){
 			I2C_SlaveSendData(&I2C_Conf_handle, &data_length , slv_addr);
 		else if(slv_cmd==0x52)
 			I2C_SlaveSendData(&I2C_Conf_handle, my_data , slv_addr);
-		//if((I2C_Conf_handle.pI2Cx->SCSR)&I2C_SLV_TREQ)
-		//	I2C_SlaveSendData(&I2C_Conf_handle, my_data, slv_addr);
 		
-		
-		//while (GPIO_ReadFromInputPin(GPIOF,GPIO_PIN_NO_4));
-	    //
-		//delay_debounce();
-		//
-		//////Receive data length///////
-	    //
-		//command_code=0x51;
-		//I2C_SendData(&I2C_Conf_handle,&command_code,1,slv_addr, I2C_EN_SR);
-		//I2C_ReceiveData(&I2C_Conf_handle,&len,1,slv_addr);
-		//
-		////////Receive actual data/////
-		//
-		//command_code=0x52;
-		//I2C_SendData(&I2C_Conf_handle,&command_code,1,slv_addr,I2C_EN_SR);
-		//I2C_ReceiveData(&I2C_Conf_handle,received_data,len,slv_addr);
-		//command_code=0x53;	
 	}
 	
 	return 0;
