@@ -79,6 +79,8 @@ void UART_PeriClockControl(UART0_Type *pUARTx, uint8_t EnorDi);
 
 void UART_SendData(UART_Handle_t *pUARTHandle, uint8_t *pTxBuffer, uint32_t Len);
 
+void UART_ReceiveData(UART_Handle_t *pUARTHandle, uint8_t *pRxBuffer, uint32_t Len);
+
 
 #endif //TM4C123_UART_DRV_HEADER
 

@@ -19,14 +19,14 @@ void UART_Init(UART_Handle_t *pUARTHandle){
 		pUARTHandle->pUARTx->IBRD=27;
 		pUARTHandle->pUARTx->FBRD=8;
 	}
-	///parity config////
+	//parity config////
 	if(pUARTHandle->UARTConfig.parity==UART_PARITY_ODD)
 			pUARTHandle->pUARTx->LCRH|=(UART_PARITY_EN);
 	else if(pUARTHandle->UARTConfig.parity==UART_PARITY_EVEN)
 			pUARTHandle->pUARTx->LCRH|=(UART_PARITY_EN|(1U<<2));
 	else if(pUARTHandle->UARTConfig.parity==UART_NO_PARITY)
 			pUARTHandle->pUARTx->LCRH&=~(UART_PARITY_EN);
-	///no of stop bits config///
+	//no of stop bits config///
 	pUARTHandle->pUARTx->LCRH&=~(1U<<3);
 	pUARTHandle->pUARTx->LCRH|=(pUARTHandle->UARTConfig.stop_bits<<3);
 	//word legth config///
@@ -90,6 +90,16 @@ void UART_SendData(UART_Handle_t *pUARTHandle, uint8_t *pTxBuffer, uint32_t Len)
 		pUARTHandle->pUARTx->DR=*pTxBuffer;
 		Len--;
 		pTxBuffer++;
+		while(UART_GetFlagStatus(pUARTHandle->pUARTx,UART_FLAG_BUSY));
+	}
+}
+
+void UART_ReceiveData(UART_Handle_t *pUARTHandle, uint8_t *pRxBuffer, uint32_t Len){
+	while(Len){
+		while(!UART_GetFlagStatus(pUARTHandle->pUARTx,UART_FLAG_RXFF));
+		*pRxBuffer=pUARTHandle->pUARTx->DR;
+		Len--;
+		pRxBuffer++;
 		while(UART_GetFlagStatus(pUARTHandle->pUARTx,UART_FLAG_BUSY));
 	}
 }

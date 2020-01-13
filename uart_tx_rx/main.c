@@ -21,6 +21,7 @@ Alt fn number for all pins is 1
 UART_Handle_t UART_Conf_handle;
 
 char msg[1024] = "UART Tx testing...\n\r";
+char rx_buf[1024];
 //char msg[1024] = "AAAAA";
 
 
@@ -92,7 +93,18 @@ int main(void){
 	while(1){
 		while(GPIO_ReadFromInputPin(GPIOF, GPIO_PIN_NO_4));
 		delay_debounce();	
-		UART_SendData(&UART_Conf_handle,(uint8_t *)msg,strlen(msg));
+		uint8_t len=strlen(msg);
+		//UART_SendData(&UART_Conf_handle,(uint8_t *)msg,strlen(msg));
+		//UART_ReceiveData(&UART_Conf_handle,(uint8_t *)rx_buf,strlen(msg));
+		while(len){
+			UART_SendData(&UART_Conf_handle,(uint8_t *)msg,1);
+			(uint8_t *)msg++;
+			UART_ReceiveData(&UART_Conf_handle,(uint8_t *)rx_buf,1);
+			(uint8_t *)rx_buf++;
+		}
+		
+		
+		
 	}
 	
 	return 0;
