@@ -34,7 +34,7 @@ void UARTperiph_init(void){
 	
 	UART_Conf_handle.pUARTx=UART1;
 
-	UART_Conf_handle.UARTConfig.uart_mode=UART_MODE_TX;
+	UART_Conf_handle.UARTConfig.uart_mode=UART_MODE_TX_RX;
 	UART_Conf_handle.UARTConfig.clk_src=UART_CLK_SYSCLK;
 	UART_Conf_handle.UARTConfig.parity=UART_NO_PARITY;
 	UART_Conf_handle.UARTConfig.stop_bits=UART_1_STP_BITS;
@@ -96,14 +96,19 @@ int main(void){
 		uint8_t len=strlen(msg);
 		//UART_SendData(&UART_Conf_handle,(uint8_t *)msg,strlen(msg));
 		//UART_ReceiveData(&UART_Conf_handle,(uint8_t *)rx_buf,strlen(msg));
-		while(len){
-			UART_SendData(&UART_Conf_handle,(uint8_t *)msg,1);
-			(uint8_t *)msg++;
-			UART_ReceiveData(&UART_Conf_handle,(uint8_t *)rx_buf,1);
-			(uint8_t *)rx_buf++;
+		//while(len){
+		for(uint8_t i=0;i<len;i++){
+			UART_SendData(&UART_Conf_handle,(uint8_t *)(msg+i),1);
+			UART_ReceiveData(&UART_Conf_handle,(uint8_t *)(rx_buf+i),1);
+			
+			//((uint8_t *) msg)++;
+			//uint8_t * temp1=(uint8_t *) msg;
+			//msg=temp1+1;
+			//rx_buf++;
 		}
-		
-		
+		//}
+		//for printf statement we need to end the string with "\0"
+		rx_buf[len+1]='\0';
 		
 	}
 	
