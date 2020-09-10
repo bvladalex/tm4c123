@@ -1,0 +1,1 @@
+the program will send a string on uart char by char and remote controller sends back char by char
